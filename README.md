@@ -1,4 +1,4 @@
-jquery-widgets-heatmap
+jquery-widget-heatmap
 ======================
 
 heatmap widget for JQuery
