@@ -1,0 +1,82 @@
+@charset "UTF-8";
+/**
+ * Stylesheet: wawax.css
+ * (c) 2013-2014 WAWAX
+ */
+html,body {
+	overflow: hidden;
+}
+
+body {
+    margin-top: 125px;
+}
+
+.navbar-fixed-top .nav {
+    padding: 15px 0;
+}
+
+.navbar-fixed-top .navbar-brand {
+	padding: 0 15px;
+}
+
+@media(min-width:768px) {
+    .navbar-fixed-top .nav {
+        padding: 15px 0;
+    }
+
+    .navbar-fixed-top .navbar-brand {
+        padding: 15px 0;
+    }
+}
+
+.wx-ui-bloc { 
+	width: auto;
+	height: auto;
+	transition: opacity .25s ease-in-out;
+	-moz-transition: opacity .25s ease-in-out;
+	-webkit-transition: opacity .25s ease-in-out;
+}
+
+.wx-ui-bloc-content { 
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	font-size: 14px;
+	margin: 10px;
+	width: auto;
+	height: auto;
+}
+
+.wx-ui-bloc-title {
+	background-position: center right;
+}
+
+/* For heatmap widget svg part */
+.wx-ui-widget-heatmap-rect-bordered {
+	stroke: #E6E6E6;
+	stroke-width: 2px;
+}
+
+.wx-ui-widget-heatmap-text-mono {
+	/*font-family: Helvetica, Arial, sans-serif;
+	font-size: 9pt;*/
+	font-weight: bold;
+	fill: #aaa;
+}
+
+.wx-ui-widget-heatmap-text-axis-workweek {
+	font-weight: bold;
+    fill: #000;
+}
+
+.wx-ui-widget-heatmap-text-axis-worktime {
+	font-weight: bold;
+    fill: #000;
+}
+
+.wx-ui-widget-heatmap-text-legend{
+    font-weight: bold;
+	fill: #aaa;
+}
+.wx-ui-widget-heatmap-dayLabel{
+    font-weight: bold;
+}
