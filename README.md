@@ -29,8 +29,10 @@ $('#wawax-widget-heatmap').heatmap({
   }],
   colors : ["#aaffee", "#6EE6CE", "#2EC993", "#2EC99B", "#3EC92E", "#3EC92E", "#3EC92E", "#E0110D", "#A8100D"],                            
 });
+```
 
 Online demo
 --------------
-http://apps.wawax.co/apps/heatmap/
+[demo](http://apps.wawax.co/apps/heatmap/)
+
 
