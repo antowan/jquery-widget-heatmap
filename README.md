@@ -12,7 +12,7 @@ You can find more advanced implementation there:
 [Heatmap JS](http://www.patrick-wied.at/static/heatmapjs/)
 
 The rendering is based on this source code:
-[Heatmap JQuery]()
+[Heatmap with d3.js](http://bl.ocks.org/tjdecke/5558084)
 
 Usage
 --------------
