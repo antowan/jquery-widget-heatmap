@@ -6,11 +6,11 @@ heatmap widget for JQuery
 A propos
 --------------
 
-My primaraly goal was develop a widget as much as possible idependant from his own data source.
-Todo so I had choosen to develop this widget with the widget factory provided by JQuery UI and I had my own logic to get binded with a proxy in charge to notify the widget with the dataset.
-The proxy is passed in parameter of the widget. In this version I used d3.js to proxy csv data files.
+My primaraly goal was to develop a widget as much as possible independant from his own data source.
+Todo so I choose to develop this widget with the widget factory provided by JQuery UI and I had my own logic to get binded with a proxy in charge to notify the widget with the dataset loading.
+The proxy is passed in parameter of the widget when you configure it. In this version I used d3.js to proxy a csv data files.
 
-This plugin is still in the early stage of his development.
+This plugin is still in the early stage of his development. So it is furnish for testing purpose only.
 
 You can find more advanced implementation there:
 [Heatmap JS](http://www.patrick-wied.at/static/heatmapjs/)
