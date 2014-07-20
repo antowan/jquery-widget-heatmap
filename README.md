@@ -37,8 +37,9 @@ $('#wawax-widget-heatmap').heatmap({
 
 Online demo
 --------------
-[demo on my website](http://apps.wawax.co/apps/heatmap/)
+[demo on my website](http://apps.wawax.co/apps/jquery-widget-heatmap/)
 
+![alt tag](http://apps.wawax.co/images/portfolio05.jpg)
 
 Contact
 --------------
