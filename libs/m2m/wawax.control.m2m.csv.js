@@ -4,10 +4,9 @@
  * 
  * Last changed: $LastChangedDate$
  * 
- * @author $Author$
+ * @author Antoine Sauvage
  * @version $Revision$
  * 
- * Copyright (c) 2013-2014 WAWAX 
  * -----------------------------
  * 
  * M2M data paroxy for CSV files

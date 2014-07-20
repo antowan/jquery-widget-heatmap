@@ -3,13 +3,13 @@
  * -----------------------------
  *
  * Last changed: $LastChangedDate$
- * @author $Author$
+ * @author Antoine Sauvage
  * @version $Revision$
  *
- * Copyright (c) 2013-2014 WAWAX
  * -----------------------------
  *
- * Cartographie des données. Analyse multi-dimensionnelle sur les heures et les jours de la semaine
+ * Heatmap cartography. 
+ * x axis are hours and y axis are days. Intersection is mean value.
  *
  */
 (function($) {
@@ -86,8 +86,11 @@
             
 			//Create containers for the graphical part
 			self.uiContent = $('<div id="wx-ui-bloc-content-' + self.widgetID + '"></div>').appendTo(el).addClass('wx-ui-bloc-content');
-			self.uiChart = $('<div id="wx-ui-chart-' + self.widgetID + '" style="width:100%"></div>').appendTo(self.uiContent);
-
+			self.uiChart = $('<div id="wx-ui-chart-' + self.widgetID + '" style="width:100%;"></div>').appendTo(self.uiContent);
+            
+            self.uiWidgetWidth = self.uiChart.width();
+            self.uiWidgetHeight = self.uiWidgetWidth * 0.5;
+           
 			//Call M2M proxy to get the datas
 			if (o.series != null) {
 				for (var i = 0; i < o.series.length; i++) {
@@ -156,102 +159,107 @@
                 console.log("An error occured during flattering the dataset. "+err);
             }
             
-           /** Start of imported code to build the graphical view */
-			var minimum = d3.min(dataJ, function(d) {
-				if (d != null){
-					return parseInt(d.min);
-				}
-			});
-			var maximum = d3.max(dataJ, function(d) {
-				if (d != null){
-					return parseInt(d.max);
-				}
-			});
-			self.midval = (maximum + minimum) / 2;
-            
-            // legend positioning
-			var margin = {
-					top : 50,
-					right : 0,
-					bottom : 130,
-					left : 30
-			}, width = (self.uiWidgetWidth - margin.left - margin.right) / 1, height = self.uiWidgetHeight - margin.top - margin.bottom, gridSize = Math.floor(width / 24), legendElementWidth = gridSize * 2, buckets = 9;
+            try{
+                /** Start of imported code to build the graphical view */
+                var minimum = d3.min(dataJ, function(d) {
+                    if (d != null){
+                        return parseInt(d.min);
+                    }
+                });
+                var maximum = d3.max(dataJ, function(d) {
+                    if (d != null){
+                        return parseInt(d.max);
+                    }
+                });
+                self.midval = (maximum + minimum) / 2;
 
-			var colorScale = d3.scale.quantile().domain([self.midval, buckets - 1, d3.max(dataJ, function(d) {
-				if (d != null)
-					return parseInt(d.mean);
-			})]).range(o.colors);
+                // legend positioning
+                var margin = {
+                        top : 50,
+                        right : 0,
+                        bottom : 100,
+                        left : 30
+                }, width = (self.uiWidgetWidth - margin.left - margin.right) / 1, height = self.uiWidgetHeight - margin.top - margin.bottom, gridSize = Math.floor(width / 24), legendElementWidth = gridSize * 2, buckets = 9;
 
-			self.uiSVG = d3.select('#wx-ui-chart-' + self.widgetID).append("svg").attr("id", 'svg_render_' + self.widgetID).attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-			
-			var dayLabels = self.uiSVG.selectAll(".wx-ui-widget-heatmap-dayLabel").data(self.days).enter().append("text").text(function(d) {
-				if (d != null)
-					return d;
-			}).attr("x", 0).attr("y", function(d, i) {
-				if (d != null)
-					return i * gridSize;
-			}).style("text-anchor", "end").attr("transform", "translate(-6," + gridSize / 1.5 + ")").attr("class", function(d, i) {
-				if (d != null)
-					return ((i >= 1 && i <= 5) ? "wx-ui-widget-heatmap-dayLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis wx-ui-widget-heatmap-text-axis-workweek" : "wx-ui-widget-heatmap-dayLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis");
-			});
+                var colorScale = d3.scale.quantile().domain([self.midval, buckets - 1, d3.max(dataJ, function(d) {
+                    if (d != null)
+                        return parseInt(d.mean);
+                })]).range(o.colors);
 
-			var timeLabels = self.uiSVG.selectAll(".wx-ui-widget-heatmap-text-timeLabel").data(self.times).enter().append("text").text(function(d) {
-				if (d != null)
-					return d;
-			}).attr("x", function(d, i) {
-				if (d != null)
-					return i * gridSize;
-			}).attr("y", 0).style("text-anchor", "middle").attr("transform", "translate(" + gridSize / 2 + ", -6)").attr("class", function(d, i) {
-				if (d != null)
-					return ((i >= 7 && i <= 18) ? "wx-ui-widget-heatmap-text-timeLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis wx-ui-widget-heatmap-text-axis-worktime" : "wx-ui-widget-heatmap-text-timeLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis");
-			});
+                self.uiSVG = d3.select('#wx-ui-chart-' + self.widgetID).append("svg").attr("id", 'svg_render_' + self.widgetID).attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-			var heatMap = self.uiSVG.selectAll(".hour").data(dataJ).enter().append("rect").attr("x", function(d) {
-				if (d != null){
-					return (d.hour) * gridSize;
-                }
-			}).attr("y", function(d) {
-				if (d != null)
-					return (d.day) * gridSize;
-			}).attr("rx", 4).attr("ry", 4).attr("class", "wx-ui-widget-heatmap-text-hour wx-ui-widget-heatmap-rect-bordered").attr("width", gridSize).attr("height", gridSize).style("fill", o.colors[0]);
+                var dayLabels = self.uiSVG.selectAll(".wx-ui-widget-heatmap-dayLabel").data(self.days).enter().append("text").text(function(d) {
+                    if (d != null)
+                        return d;
+                }).attr("x", 0).attr("y", function(d, i) {
+                    if (d != null)
+                        return i * gridSize;
+                }).style("text-anchor", "end").attr("transform", "translate(-6," + gridSize / 1.5 + ")").attr("class", function(d, i) {
+                    if (d != null)
+                        return ((i >= 1 && i <= 5) ? "wx-ui-widget-heatmap-dayLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis wx-ui-widget-heatmap-text-axis-workweek" : "wx-ui-widget-heatmap-dayLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis");
+                });
 
-			heatMap.transition().duration(500).style("fill", function(d) {
-				if (d != null && d.mean != null)
-					return colorScale(d.mean);
-				else return "#fff";
-			});
+                var timeLabels = self.uiSVG.selectAll(".wx-ui-widget-heatmap-text-timeLabel").data(self.times).enter().append("text").text(function(d) {
+                    if (d != null)
+                        return d;
+                }).attr("x", function(d, i) {
+                    if (d != null)
+                        return i * gridSize;
+                }).attr("y", 0).style("text-anchor", "middle").attr("transform", "translate(" + gridSize / 2 + ", -6)").attr("class", function(d, i) {
+                    if (d != null)
+                        return ((i >= 7 && i <= 18) ? "wx-ui-widget-heatmap-text-timeLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis wx-ui-widget-heatmap-text-axis-worktime" : "wx-ui-widget-heatmap-text-timeLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis");
+                });
 
-			heatMap.append("title").text(function(d) {
-				if (d != null)
-					return d.mean;
-			});
+                var heatMap = self.uiSVG.selectAll(".hour").data(dataJ).enter().append("rect").attr("x", function(d) {
+                    if (d != null){
+                        return (d.hour) * gridSize;
+                    }
+                }).attr("y", function(d) {
+                    if (d != null)
+                        return (d.day) * gridSize;
+                }).attr("rx", 4).attr("ry", 4).attr("class", "wx-ui-widget-heatmap-text-hour wx-ui-widget-heatmap-rect-bordered").attr("width", gridSize).attr("height", gridSize).style("fill", o.colors[0]);
 
-			var legend = self.uiSVG.selectAll(".wx-ui-widget-heatmap-text-legend").data([0].concat(colorScale.quantiles()), function(d) {
-				if (d != null)
-					return d;
-			}).enter().append("g").attr("class", "wx-ui-widget-heatmap-text-legend");
+                heatMap.transition().duration(500).style("fill", function(d) {
+                    if (d != null && d.mean != null)
+                        return colorScale(d.mean);
+                    else return "#fff";
+                });
 
-			legend.append("rect").attr("x", function(d, i) {
-				if (d != null)
-					return legendElementWidth * i;
-			}).attr("y", height).attr("width", legendElementWidth).attr("height", gridSize / 2).style("fill", function(d, i) {
-				if (d != null)
-					return o.colors[i];
-			});
+                heatMap.append("title").text(function(d) {
+                    if (d != null)
+                        return d.mean;
+                });
 
-			//CSS customization
-			legend.append("text").attr("class", "wx-ui-widget-heatmap-text.mono").text(function(d) {
-				if (d != null)
-					return "≥ " + Math.round(d);
-			}).attr("x", function(d, i) {
-				if (d != null)
-					return legendElementWidth * i;
-			}).attr("y", height + gridSize);
-            /** End of imported code to build a svg matrix */
+                var legend = self.uiSVG.selectAll(".wx-ui-widget-heatmap-text-legend").data([0].concat(colorScale.quantiles()), function(d) {
+                    if (d != null)
+                        return d;
+                }).enter().append("g").attr("class", "wx-ui-widget-heatmap-text-legend");
+
+                legend.append("rect").attr("x", function(d, i) {
+                    if (d != null)
+                        return legendElementWidth * i;
+                }).attr("y", height).attr("width", legendElementWidth).attr("height", gridSize / 2).style("fill", function(d, i) {
+                    if (d != null)
+                        return o.colors[i];
+                });
+
+                //CSS customization
+                legend.append("text").attr("class", "wx-ui-widget-heatmap-text.mono").text(function(d) {
+                    if (d != null)
+                        return "≥ " + Math.round(d);
+                }).attr("x", function(d, i) {
+                    if (d != null)
+                        return legendElementWidth * i;
+                }).attr("y", height + gridSize);
+                /** End of imported code to build a svg matrix */
+            }
+            catch(err){
+                console.log(err);
+            }
         },
         
        
-         /**
+        /**
 		 * ========================================================================
 		 *
 		 * Built a matrix representation of the source datas
