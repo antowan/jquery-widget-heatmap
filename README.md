@@ -44,7 +44,8 @@ Online demo
 ![alt tag](img/screenshot.jpg)
 
 Dataset validation
-![alt tag](datas/cross_table.jpg)
+--------------
+![alt tag](datas/cross_table_validation.jpg)
 
 
 Todo
