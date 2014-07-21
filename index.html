@@ -56,7 +56,8 @@
                     This example is based on temperature datas and we will try to understand how evolve the temperature in our office room.
                 </p>
                 <p>
-                    The data source can be downloaded here<a href="datas/data.csv"><code>data.csv</code></a>.
+                    The data source can be downloaded here<a href="datas/data.csv"><code>data.csv</code></a>, 
+                    and the open office file used for validation here<a href="datas/data.ods"><code>data.odt</code></a>.
                 </p>
                 <p>
                     Download this widget on Github<a href="https://github.com/antowan/jquery-widget-heatmap/archive/master.zip"><code>source.zip</code></a>.
@@ -86,17 +87,11 @@
                             </h3>
                             <ul>
                                 <li>
-                                    Don't display properly in Firefox. 
-                                </li>
-                                <li>
-                                    When the window is resized the content should be repainted automatically.
+                                    <strong>Don't display properly in Firefox.</strong> Use Chrome instead for example to test. 
                                 </li>
                                 <li>
                                     When the window is resized the legend positioning may become badly positioned.
-                                </li>
-                                <li>
-                                    Timezone is not implemented so the dataset should be shifted to a wrong time index.
-                                </li>                                
+                                </li>                            
                             </ul>
                         </div>
                     </div>
@@ -108,11 +103,29 @@
                                         Heatmap demo.
                                     </h3>
                                 </div>
+                                
                                 <div class="panel-body" id="wawax-widget-heatmap">
+                                    <p class="bg-primary">
+                                        <br />
+                                        <b>&nbsp;Comment:</b> Adding some cooling the afternoon maybe add some enjoyable extra confort to your employees (^_-)!
+                                        <br /><br />
+                                    </p>
                                 </div>
                                 
                                 <div class="panel-footer">
-                                    <b>Comment:</b> Adding some cooling the afternoon maybe add some enjoyable extra confort to your employees :)
+                                    <p>
+                                        <ul>
+                                            <li>
+                                                <b>x-axis: </b>hours
+                                            </li>
+                                            <li>
+                                                <b>y-axis: </b>days
+                                            </li>
+                                            <li>
+                                                <b>value: </b>mean value
+                                            </li>
+                                        </ul>
+                                    </p>                                    
                                 </div>
                             </div>
                         </div>
@@ -141,9 +154,9 @@
             $.getScript("libs/widgets/wawax.heatmap/wawax.widget.heatmap.js").done(function(script, textStatus) {
                 
                 $('#wawax-widget-heatmap').heatmap({
-                    title : 'Analysis of office temperature',
+                    title : 'Indoor office temperature',
                     series : [{
-                        label : 'My office',
+                        label : 'My office room',
                         serie : {
                             fn : 'controlCSVHistorique',
                             req : 'datas/data.csv'                            

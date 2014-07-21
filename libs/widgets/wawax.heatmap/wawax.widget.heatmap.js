@@ -53,7 +53,7 @@
 		uiSVG : null,
 		
         days : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-		times : ["0h", "1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h"],
+		times : ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
 		startdate : null,
 		enddate : null,
 		midval : null,
@@ -81,17 +81,20 @@
 		 */
 		_init : function() {
 			var self = this, o = self.options, el = self.element;
-
-			self.uiTitle = $('<div id="wx-ui-bloc-title-' + self.widgetID + '">' + o.title + '</div>').appendTo(el).addClass('ui-bar-a  wx-ui-bloc-title');
+                
+            //Title div
+            self.uiTitle = $('<div id="wx-ui-bloc-title-' + self.widgetID + '">' + o.title + '</div>').appendTo(el).addClass('ui-bar-a  wx-ui-bloc-title');
             
-			//Create containers for the graphical part
+			//Content div and Chart div
 			self.uiContent = $('<div id="wx-ui-bloc-content-' + self.widgetID + '"></div>').appendTo(el).addClass('wx-ui-bloc-content');
 			self.uiChart = $('<div id="wx-ui-chart-' + self.widgetID + '" style="width:100%;"></div>').appendTo(self.uiContent);
             
+            //Set widget size
             self.uiWidgetWidth = self.uiChart.width();
-            self.uiWidgetHeight = self.uiWidgetWidth * 0.5;
+            self.uiWidgetHeight = self.uiWidgetWidth * 0.4;
            
 			//Call M2M proxy to get the datas
+            //Pass in argument filters to apply before loading the dataset to inscrease responsivness
 			if (o.series != null) {
 				for (var i = 0; i < o.series.length; i++) {
 					var tb = o.series[i];
@@ -107,6 +110,13 @@
 					self.uiContent.bind('wxHistoDataSetLoaded', $.proxy(self, '_updateGraphic', i));
 				}
 			}
+            
+            //redraw
+            $(window).bind('resize', function(e)
+            {
+              //console.log('window resized ...');
+              self._updateGraphic();
+            });
 		},
 
         /**
@@ -116,57 +126,29 @@
 		 *
 		 * ========================================================================
 		 */
-        _updateGraphic : function(index) {
+        _updateGraphic : function(index) {//index is ignored in this code should only be used with one dataset
             var self = this, o = self.options, el = self.element;
-
-            self.mySeries = Array.prototype.slice.call(arguments, 2);   
-            var matrice = self._buildMatrix(self.mySeries);
-   
-            //put inline the data for the graphical component
-            var dataJ = new Array();
-            var k = 0;
             
-            try {
-                for (var i = 0; i < matrice.length; i++) {
-                    for (var j = 0; j < matrice[i].length; j++) {
-                        var obj = matrice[i][j];
-
-                        try {
-                            var jsonMel = new Object({
-                                day : obj.day,
-                                hour : obj.hour,
-                                sum : (obj.sum).toFixed(1),
-                                mean : (obj.sum / obj.nbValue).toFixed(1),
-                                min : (obj.min).toFixed(1),
-                                max : (obj.max).toFixed(1)
-                            });
-                        } catch(err) {
-                            jsonMel = new Object({
-                                day : obj.day,
-                                hour : obj.hour,
-                                sum : null,
-                                mean : null,
-                                min : null,
-                                max : null
-                            });
-                        }
-                        dataJ[k] = jsonMel;
-                        k++;
-                    }
-                }
-            }
-            catch(err) {
-                console.log("An error occured during flattering the dataset. "+err);
+            //If the call is made with an empty array so just refresh the graphical part
+            var dataSet = Array.prototype.slice.call(arguments, 2);
+            if(dataSet != [] && index != null){
+                self.mySeries = dataSet;
+                self.mySeries = self._buildMatrix(dataSet);
             }
             
+            //reset widget size and clean container
+            $('#wx-ui-chart-' + self.widgetID).empty();
+            self.uiWidgetWidth = self.uiChart.width();
+            self.uiWidgetHeight = self.uiWidgetWidth * 0.4;
+                      
             try{
                 /** Start of imported code to build the graphical view */
-                var minimum = d3.min(dataJ, function(d) {
+                var minimum = d3.min(self.mySeries, function(d) {
                     if (d != null){
                         return parseInt(d.min);
                     }
                 });
-                var maximum = d3.max(dataJ, function(d) {
+                var maximum = d3.max(self.mySeries, function(d) {
                     if (d != null){
                         return parseInt(d.max);
                     }
@@ -179,61 +161,101 @@
                         right : 0,
                         bottom : 100,
                         left : 30
-                }, width = (self.uiWidgetWidth - margin.left - margin.right) / 1, height = self.uiWidgetHeight - margin.top - margin.bottom, gridSize = Math.floor(width / 24), legendElementWidth = gridSize * 2, buckets = 9;
+                    }, 
+                    //width = self.uiWidgetWidth - margin.left - margin.right, 
+                    //height = self.uiWidgetHeight - margin.top - margin.bottom, 
+                    width = self.uiWidgetWidth - margin.left - margin.right, 
+                    height = self.uiWidgetHeight + margin.top - margin.bottom, 
+                    gridSize = Math.floor(width / 24), 
+                    legendElementWidth = gridSize * 2, 
+                    buckets = 9;
+                
+                var colorScale = d3.scale.quantile()
+                    .domain([self.midval, buckets - 1, d3.max(self.mySeries, function(d) {
+                        if (d != null)
+                            return parseInt(d.mean);
+                    })])
+                    .range(o.colors);
 
-                var colorScale = d3.scale.quantile().domain([self.midval, buckets - 1, d3.max(dataJ, function(d) {
-                    if (d != null)
-                        return parseInt(d.mean);
-                })]).range(o.colors);
+                self.uiSVG = d3.select('#wx-ui-chart-' + self.widgetID).append("svg").attr("id", 'svg_render_' + self.widgetID)
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                self.uiSVG = d3.select('#wx-ui-chart-' + self.widgetID).append("svg").attr("id", 'svg_render_' + self.widgetID).attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-                var dayLabels = self.uiSVG.selectAll(".wx-ui-widget-heatmap-dayLabel").data(self.days).enter().append("text").text(function(d) {
-                    if (d != null)
+                var dayLabels = self.uiSVG.selectAll(".wx-ui-widget-heatmap-dayLabel")
+                    .data(self.days).enter().append("text")
+                    .text(function(d) {
+                        if (d != null)
                         return d;
-                }).attr("x", 0).attr("y", function(d, i) {
-                    if (d != null)
-                        return i * gridSize;
-                }).style("text-anchor", "end").attr("transform", "translate(-6," + gridSize / 1.5 + ")").attr("class", function(d, i) {
-                    if (d != null)
-                        return ((i >= 1 && i <= 5) ? "wx-ui-widget-heatmap-dayLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis wx-ui-widget-heatmap-text-axis-workweek" : "wx-ui-widget-heatmap-dayLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis");
-                });
+                    })
+                    .attr("x", 0).attr("y", function(d, i) {
+                        if (d != null)
+                            return i * gridSize;
+                    })
+                    .style("text-anchor", "end")
+                    .attr("transform", "translate(-6," + gridSize / 1.5 + ")")
+                    .attr("class", function(d, i) {
+                        if (d != null)
+                            return ((i >= 1 && i <= 5) ? "wx-ui-widget-heatmap-dayLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis wx-ui-widget-heatmap-text-axis-workweek" : "wx-ui-widget-heatmap-dayLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis");
+                    });
 
-                var timeLabels = self.uiSVG.selectAll(".wx-ui-widget-heatmap-text-timeLabel").data(self.times).enter().append("text").text(function(d) {
-                    if (d != null)
-                        return d;
-                }).attr("x", function(d, i) {
-                    if (d != null)
-                        return i * gridSize;
-                }).attr("y", 0).style("text-anchor", "middle").attr("transform", "translate(" + gridSize / 2 + ", -6)").attr("class", function(d, i) {
-                    if (d != null)
+                var timeLabels = self.uiSVG.selectAll(".wx-ui-widget-heatmap-text-timeLabel")
+                    .data(self.times).enter().append("text").text(function(d) {
+                        if (d != null)
+                            return d;
+                    })
+                    .attr("x", function(d, i) {
+                        if (d != null)
+                            return i * gridSize;
+                    })
+                    .attr("y", 0)
+                    .style("text-anchor", "middle")
+                    .attr("transform", "translate(" + gridSize / 2 + ", -6)")
+                    .attr("class", function(d, i) {
+                        if (d != null)
                         return ((i >= 7 && i <= 18) ? "wx-ui-widget-heatmap-text-timeLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis wx-ui-widget-heatmap-text-axis-worktime" : "wx-ui-widget-heatmap-text-timeLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis");
                 });
 
-                var heatMap = self.uiSVG.selectAll(".hour").data(dataJ).enter().append("rect").attr("x", function(d) {
-                    if (d != null){
-                        return (d.hour) * gridSize;
-                    }
-                }).attr("y", function(d) {
-                    if (d != null)
-                        return (d.day) * gridSize;
-                }).attr("rx", 4).attr("ry", 4).attr("class", "wx-ui-widget-heatmap-text-hour wx-ui-widget-heatmap-rect-bordered").attr("width", gridSize).attr("height", gridSize).style("fill", o.colors[0]);
+                var heatMap = self.uiSVG.selectAll(".hour")
+                    .data(self.mySeries)
+                    .enter()
+                    .append("rect")
+                    .attr("x", function(d) {
+                        if (d != null){
+                            return (d.hour) * gridSize;
+                        }
+                    })
+                    .attr("y", function(d) {
+                        if (d != null)
+                            return (d.day) * gridSize;
+                    })
+                    .attr("rx", 4).attr("ry", 4)
+                    .attr("class", "wx-ui-widget-heatmap-text-hour wx-ui-widget-heatmap-rect-bordered")
+                    .attr("width", gridSize)
+                    .attr("height", gridSize)
+                    .style("fill", o.colors[0]);
 
-                heatMap.transition().duration(500).style("fill", function(d) {
-                    if (d != null && d.mean != null)
-                        return colorScale(d.mean);
-                    else return "#fff";
-                });
+                heatMap.transition()
+                    .duration(500)
+                    .style("fill", function(d) {
+                        if (d != null && d.mean != null)
+                            return colorScale(d.mean);
+                        else return "#fff";
+                    });
 
                 heatMap.append("title").text(function(d) {
                     if (d != null)
                         return d.mean;
                 });
 
-                var legend = self.uiSVG.selectAll(".wx-ui-widget-heatmap-text-legend").data([0].concat(colorScale.quantiles()), function(d) {
-                    if (d != null)
-                        return d;
-                }).enter().append("g").attr("class", "wx-ui-widget-heatmap-text-legend");
+                var legend = self.uiSVG.selectAll(".wx-ui-widget-heatmap-text-legend")
+                    .data([0].concat(colorScale.quantiles()), function(d) {
+                        if (d != null)
+                            return d;
+                    })
+                    .enter()
+                    .append("g").attr("class", "wx-ui-widget-heatmap-text-legend");
 
                 legend.append("rect").attr("x", function(d, i) {
                     if (d != null)
@@ -342,8 +364,68 @@
                 catch(err) {
                     console.log("No data could be accessed at this index. "+err);
                 }
+                
             }
-            return matrice;
+            
+            //flatten the matrix and calculate the desired value (here mean value)
+            var k = 0;
+            var dataJ = new Array();
+
+            try {
+                for (var i = 0; i < matrice.length; i++) {
+                    for (var j = 0; j < matrice[i].length; j++) {
+                        var obj = matrice[i][j];
+
+                        try {
+                            var jsonMel = new Object({
+                                day : obj.day,
+                                hour : obj.hour,
+                                sum : (obj.sum).toFixed(1),
+                                mean : (obj.sum / obj.nbValue).toFixed(1),
+                                min : (obj.min).toFixed(1),
+                                max : (obj.max).toFixed(1)
+                            });
+                        } catch(err) {
+                            jsonMel = new Object({
+                                day : obj.day,
+                                hour : obj.hour,
+                                sum : null,
+                                mean : null,
+                                min : null,
+                                max : null
+                            });
+                        }
+                        dataJ[k] = jsonMel;
+                        k++;
+                    }
+                }
+            }
+            catch(err) {
+                console.log("An error occured during flattering the dataset. "+err);
+            }
+
+            return dataJ;
+        },
+        
+        /**
+		 * ========================================================================
+		 *
+		 * Manipulate the options after loading and refresh
+		 *
+		 * ========================================================================
+		 */
+        _setOption: function( key, value ) {
+        if ( key === "value" ) {
+            value = this._constrain( value );
+        }
+        this._super( key, value );
+        },
+        _setOptions: function( options ) {
+            this._super( options );
+            this.refresh();
+        },
+        refresh: function() {
+            //TODO
         }
         
 	});
