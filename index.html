@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="http://wawax.co">
-                    <img src="img/mascotte.png" style="height: 50px;" alt="logo" />wawax demo. - Heatmap
+                    <img src="img/mascotte.png" style="height: 50px;" alt="logo" />&nbsp;wawax.co
                 </a>
             </div>
 
@@ -48,7 +48,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h1>Welcome on this demo page !</h1>
+                <h1>Heatmap JQuery Widget demo. </h1>
                 <p>
                     When you have a huge amount of data you want to analyse globally, it could be relevant to identify at first general patterns in order to understand qualitatively your data set.
                 </p>
@@ -58,8 +58,48 @@
                 <p>
                     The data source can be downloaded here<a href="datas/data.csv"><code>data.csv</code></a>.
                 </p>
+                <p>
+                    Download this widget on Github<a href="https://github.com/antowan/jquery-widget-heatmap/archive/master.zip"><code>source.zip</code></a>.
+                </p>
                 
                 <div class="container">
+                    <div class="row clearfix">
+                        <div class="col-md-12 column">
+                            <h3>
+                                Coming features&nbsp;<span class="glyphicon glyphicon-heart-empty"></span>
+                            </h3>
+                            <ul>
+                                <li>
+                                    Control pane to manipulate the Jquery widget options.
+                                </li>
+                                <li>
+                                    Add new selectable data sources.
+                                </li>
+                                <li>
+                                    Use browser local storage to keep the user parameters pre-selected on next loading.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12 column">
+                            <h3>
+                                Known bug to fix&nbsp;<span class="glyphicon glyphicon-warning-sign"></span>
+                            </h3>
+                            <ul>
+                                <li>
+                                    Don't display properly in Firefox. 
+                                </li>
+                                <li>
+                                    When the window is resized the content should be repainted automatically.
+                                </li>
+                                <li>
+                                    When the window is resized the legend positioning may become badly positioned.
+                                </li>
+                                <li>
+                                    Timezone is not implemented so the dataset should be shifted to a wrong time index.
+                                </li>                                
+                            </ul>
+                        </div>
+                    </div>
                     <div class="row clearfix">
                         <div class="col-md-12 column">
                             <div class="panel panel-default">
@@ -77,14 +117,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <p>
                     
-                </p>
+                    
+                </div>
             </div>
         </div>
-
     </div>
+
     <!-- /.container -->
 
     <!-- JavaScript -->
