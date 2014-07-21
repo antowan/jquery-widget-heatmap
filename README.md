@@ -20,6 +20,8 @@ The rendering is based on this source code:
 
 Usage
 --------------
+Here the proxy function name is: controlCSVHistorique.
+The proxy is called by the widget to get the dataset.
 
 ```javascript
 $('#wawax-widget-heatmap').heatmap({
@@ -40,6 +42,15 @@ Online demo
 [demo on my website](http://apps.wawax.co/apps/jquery-widget-heatmap/)
 
 ![alt tag](img/screenshot.jpg)
+
+Dataset validation
+![alt tag](datas/cross_table.jpg)
+
+
+Todo
+--------------
+- [ ] Add control panel to modify dynamically the jquery widget options
+- [ ] Add new datasources
 
 Contact
 --------------
