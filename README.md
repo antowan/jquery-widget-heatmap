@@ -23,9 +23,9 @@ Usage
 
 ```javascript
 $('#wawax-widget-heatmap').heatmap({
-  title : 'Analysis of office temperature',
+  title : 'Indoor office temperature',
   series : [{
-      label : 'My office',
+      label : 'My office room',
       serie : {
           fn : 'controlCSVHistorique',
           req : 'datas/data.csv'                            
@@ -39,7 +39,7 @@ Online demo
 --------------
 [demo on my website](http://apps.wawax.co/apps/jquery-widget-heatmap/)
 
-![alt tag](http://apps.wawax.co/images/portfolio05.jpg)
+![alt tag](img/screenshot.jpg)
 
 Contact
 --------------
