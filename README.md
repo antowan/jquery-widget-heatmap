@@ -29,11 +29,11 @@ $('#wawax-widget-heatmap').heatmap({
   series : [{
       label : 'My office room',
       serie : {
-          fn : 'controlCSVHistorique',
+          fn : 'controlCSV',
           req : 'datas/data.csv'                            
       }
   }],
-  colors : ["#aaffee", "#6EE6CE", "#2EC993", "#2EC99B", "#3EC92E", "#3EC92E", "#3EC92E", "#E0110D", "#A8100D"],                            
+  colors : ["#AAFFEE", "#6EE6CE", "#2EC993", "#2EC99B", "#3EC92E", "#3EC92E", "#3EC92E", "#E0110D", "#A8100D"],                            
 });
 ```
 
@@ -52,7 +52,7 @@ Validation spreadsheet (.ods format) : [data.ods](datas/data.ods)
 
 Todo
 --------------
-- [ ] Add control panel to modify dynamically the jquery widget options
+- [ ] Add more options to setup the jquery widget
 - [ ] Add new datasources
 
 Contact
