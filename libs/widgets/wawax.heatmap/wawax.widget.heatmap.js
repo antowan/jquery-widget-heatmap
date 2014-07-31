@@ -138,6 +138,7 @@
             
             //reset widget size and clean container
             $('#wx-ui-chart-' + self.widgetID).empty();
+            //if(self.uiSVG != null)self.uiSVG.empty();
             self.uiWidgetWidth = self.uiChart.width();
             self.uiWidgetHeight = self.uiWidgetWidth * 0.4;
                       
@@ -176,8 +177,10 @@
                             return parseInt(d.mean);
                     })])
                     .range(o.colors);
-
-                self.uiSVG = d3.select('#wx-ui-chart-' + self.widgetID).append("svg").attr("id", 'svg_render_' + self.widgetID)
+                
+                
+                
+                self.uiSVG = d3.select('#wx-ui-chart-' + self.widgetID).append("svg").attr("id", 'wx-svg-render-' + self.widgetID)
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
                     .append("g")
@@ -217,7 +220,7 @@
                         return ((i >= 7 && i <= 18) ? "wx-ui-widget-heatmap-text-timeLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis wx-ui-widget-heatmap-text-axis-worktime" : "wx-ui-widget-heatmap-text-timeLabel wx-ui-widget-heatmap-text-mono wx-ui-widget-heatmap-text-axis");
                 });
 
-                var heatMap = self.uiSVG.selectAll(".hour")
+                var heatMap = self.uiSVG.selectAll(".wx-ui-widget-heatmap-text-hour")
                     .data(self.mySeries)
                     .enter()
                     .append("rect")
@@ -235,12 +238,13 @@
                     .attr("width", gridSize)
                     .attr("height", gridSize)
                     .style("fill", o.colors[0]);
-
+                
                 heatMap.transition()
                     .duration(500)
                     .style("fill", function(d) {
-                        if (d != null && d.mean != null)
+                        if (d != null && d.mean != null){
                             return colorScale(d.mean);
+                        }
                         else return "#fff";
                     });
 
@@ -261,8 +265,9 @@
                     if (d != null)
                         return legendElementWidth * i;
                 }).attr("y", height).attr("width", legendElementWidth).attr("height", gridSize / 2).style("fill", function(d, i) {
-                    if (d != null)
+                    if (d != null){
                         return o.colors[i];
+                    }
                 });
 
                 //CSS customization
@@ -414,18 +419,41 @@
 		 *
 		 * ========================================================================
 		 */
+        
+        //Setters
         _setOption: function( key, value ) {
-        if ( key === "value" ) {
-            value = this._constrain( value );
-        }
-        this._super( key, value );
+            if ( key === "value" ) {
+                value = this._constrain( value );
+            }
+            this._super( key, value );
         },
+        
         _setOptions: function( options ) {
             this._super( options );
-            this.refresh();
         },
-        refresh: function() {
-            //TODO
+        
+        setColorIndex: function(index, value){
+            var self = this, o = self.options;
+            var new_colors = o.colors;
+            new_colors[index] = value;
+            this._setOption('colors', new_colors);
+            this._refresh();
+        },
+        
+        setTitle: function(value){
+            var self = this, o = self.options;            
+            self._setOption('title', value);
+            self.uiTitle.text(o.title);
+        },
+        
+        //Public Accessor for all the options
+        getOptions: function() {
+            return this.options; 
+        },
+        
+        //repaint
+        _refresh: function() {
+            this._updateGraphic(null);
         }
         
 	});

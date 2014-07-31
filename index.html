@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <meta name="description" content="heatmap">
-    <meta name="author" content="wawax">
+    <meta name="description" content="heatmap" />
+    <meta name="author" content="wawax" />
 
     <title>Data Analysis - HeatMap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Custom CSS -->
     <link href="css/wawax.css" rel="stylesheet" />
@@ -57,7 +57,7 @@
                 </p>
                 <p>
                     The data source can be downloaded here<a href="datas/data.csv"><code>data.csv</code></a>, 
-                    and the open office file used for validation here<a href="datas/data.ods"><code>data.odt</code></a>.
+                    and the open office file used for validation here<a href="datas/data.ods"><code>data.ods</code></a>.
                 </p>
                 <p>
                     Download this widget on Github<a href="https://github.com/antowan/jquery-widget-heatmap/archive/master.zip"><code>source.zip</code></a>.
@@ -71,7 +71,7 @@
                             </h3>
                             <ul>
                                 <li>
-                                    Control pane to manipulate the Jquery widget options.
+                                    Enhance the control pane to manipulate more options of the Jquery widget.
                                 </li>
                                 <li>
                                     Add new selectable data sources.
@@ -96,39 +96,58 @@
                         </div>
                     </div>
                     <div class="row clearfix">
-                        <div class="col-md-12 column">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">
-                                        Heatmap demo.
-                                    </h3>
+                        <div class="row clearfix">
+                            <div class="col-md-8 column">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            <b>Heatmap demo.</b>
+                                        </h3>
+                                    </div>
+
+                                    <div class="panel-body" id="wawax-widget-heatmap">
+                                        <p class="bg-primary">
+                                            <br />
+                                            <b>&nbsp;Comment:</b> Adding some cooling the afternoon maybe add some enjoyable extra confort to your employees (^_-)!
+                                            <br /><br />
+                                        </p>
+                                    </div>
+
+                                    <div class="panel-footer">
+                                        <p>
+                                            <ul>
+                                                <li>
+                                                    <b>x-axis: </b>hours
+                                                </li>
+                                                <li>
+                                                    <b>y-axis: </b>days
+                                                </li>
+                                                <li>
+                                                    <b>value: </b>mean value
+                                                </li>
+                                            </ul>
+                                        </p>                                    
+                                    </div>
                                 </div>
-                                
-                                <div class="panel-body" id="wawax-widget-heatmap">
-                                    <p class="bg-primary">
-                                        <br />
-                                        <b>&nbsp;Comment:</b> Adding some cooling the afternoon maybe add some enjoyable extra confort to your employees (^_-)!
-                                        <br /><br />
-                                    </p>
-                                </div>
-                                
-                                <div class="panel-footer">
-                                    <p>
-                                        <ul>
-                                            <li>
-                                                <b>x-axis: </b>hours
-                                            </li>
-                                            <li>
-                                                <b>y-axis: </b>days
-                                            </li>
-                                            <li>
-                                                <b>value: </b>mean value
-                                            </li>
-                                        </ul>
-                                    </p>                                    
+                            </div>
+                            <!-- Control pane -->
+                            <div class="col-md-4 column">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            <b>Settings</b>
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body" id="wawax-widget-heatmap">
+                                        <p class="bg-primary">
+                                            <div class="wx-controlpane-title"></div>
+                                            <div class="wx-controlpane-color"></div>
+                                         </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                       
                     </div>
                     
                     
@@ -153,21 +172,55 @@
             //load asynchronously the widget inside this page
             $.getScript("libs/widgets/wawax.heatmap/wawax.widget.heatmap.js").done(function(script, textStatus) {
                 
+                /** 
+                 * Widget JQuery 
+                 */
+                
                 $('#wawax-widget-heatmap').heatmap({
                     title : 'Indoor office temperature',
                     series : [{
                         label : 'My office room',
                         serie : {
-                            fn : 'controlCSVHistorique',
+                            fn : 'controlCSV',
                             req : 'datas/data.csv'                            
                         }
                     }],
-                    colors : ["#aaffee", "#6EE6CE", "#2EC993", "#2EC99B", "#3EC92E", "#3EC92E", "#3EC92E", "#E0110D", "#A8100D"],                            
+                    colors : ["#AAFFEE", "#6EE6CE", "#2EC993", "#2EC99B", "#3EC92E", "#3EC92E", "#3EC92E", "#E0110D", "#A8100D"],                            
                 });
                 
+                var colors = $('#wawax-widget-heatmap').heatmap('getOptions').colors;
+                
+                /** 
+                 * Control Pane - Settings 
+                 */
+                
+                //title
+                $('<p><span class="label label-default">Title</span>').appendTo($('.wx-controlpane-color'));
+                $('<input id="wx-title" type="text" value="" style="width:100%"/></p>')
+                    .appendTo($('.wx-controlpane-color'))
+                    .val($('#wawax-widget-heatmap').heatmap('getOptions').title);
+                
+                $('#wx-title').on('change', function(ev){                    
+                    $('#wawax-widget-heatmap').heatmap('setTitle',ev.target.value);
+                });
+                
+                //colors
+                $('<p><span class="label label-default">Colors</span>').appendTo($('.wx-controlpane-color'));
+                for(var i=0;i<colors.length;i++){
+                    $('<input id="wx-color-'+i+'" type="color" value="" name="wx-color-'+i+'" />').appendTo($('.wx-controlpane-color'));
+                    $('#wx-color-'+i).val(colors[i]);
+                    $('#wx-color-'+i).on('change', function(ev){
+                        var index = (ev.target.id).substring(ev.target.id.length - 1);
+                        $('#wawax-widget-heatmap').heatmap('setColorIndex',index,ev.target.value);
+                    });
+                }
+                $('</p>').appendTo($('.wx-controlpane-color'));
+                
+
             }).fail(function(jqxhr, settings, exception) {
                 console.log("An error occured during the loading.");
             });
+                        
         });
     </script>
 </body>

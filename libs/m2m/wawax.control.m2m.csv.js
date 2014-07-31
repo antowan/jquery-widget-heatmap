@@ -33,7 +33,7 @@ jQuery(function($) {
 	 * @param {int}
 	 *            option maximum data to load
 	 */
-	$.fn.controlCSVHistorique = function(path, option) {
+	$.fn.controlCSV = function(path, option) {
 		var control = this;
 		d3.csv(path, function(d) {
 			return {
