@@ -44,7 +44,10 @@ Online demo
 ![alt tag](img/screenshot.jpg)
 
 Dataset validation
-![alt tag](datas/cross_table.jpg)
+--------------
+Validation spreadsheet (.ods format) : [data.ods](datas/data.ods)
+
+![alt tag](datas/cross_table_validation.jpg)
 
 
 Todo
