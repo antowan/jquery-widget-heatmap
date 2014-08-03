@@ -3,9 +3,10 @@
  * -----------------------------
  *
  * Last changed: $LastChangedDate$
- * @author Antoine Sauvage
+ * @author Antoine SAUVAGE
  * @version $Revision$
  *
+ * Copyright (c) 2013-2014 WAWAX
  * -----------------------------
  *
  * Heatmap cartography. 
@@ -110,7 +111,6 @@
 					self.uiContent.bind('wxHistoDataSetLoaded', $.proxy(self, '_updateGraphic', i));
 				}
 			}
-            
             //redraw
             $(window).bind('resize', function(e)
             {
@@ -118,7 +118,7 @@
               self._updateGraphic();
             });
 		},
-
+        
         /**
 		 * ========================================================================
 		 *
@@ -421,15 +421,20 @@
 		 */
         
         //Setters
-        _setOption: function( key, value ) {
+        _setOption: function( key, value ) { //inherited from super class
             if ( key === "value" ) {
                 value = this._constrain( value );
             }
             this._super( key, value );
         },
         
-        _setOptions: function( options ) {
+        _setOptions: function( options ) { //inherited from super class
             this._super( options );
+        },
+        
+        setOptions: function ( options ) { //public access to set all the options
+            this._setOptions( options );
+            this.uiTitle.text(this.options.title);//mise à jour de la vue
         },
         
         setColorIndex: function(index, value){
@@ -448,7 +453,7 @@
         
         //Public Accessor for all the options
         getOptions: function() {
-            return this.options; 
+            return this.options; x
         },
         
         //repaint

@@ -77,7 +77,7 @@
                                     Add new selectable data sources.
                                 </li>
                                 <li>
-                                    Use browser local storage to keep the user parameters pre-selected on next loading.
+                                    Add button to cleanup the localstorage and come back to the default settings.
                                 </li>
                             </ul>
                         </div>
@@ -166,6 +166,7 @@
     <script src="libs/external/d3/d3.min.js"></script>
     <script src="libs/m2m/wawax.control.m2m.csv.js"></script>
     <script src="libs/widgets/wawax.heatmap/wawax.widget.heatmap.js"></script>
+    <script src="libs/widgets/wawax.utils.js"></script>
     
     <script type="text/javascript">
         $(document).ready(function() {
@@ -185,11 +186,9 @@
                             req : 'datas/data.csv'                            
                         }
                     }],
-                    colors : ["#AAFFEE", "#6EE6CE", "#2EC993", "#2EC99B", "#3EC92E", "#3EC92E", "#3EC92E", "#E0110D", "#A8100D"],                            
-                });
-                
-                var colors = $('#wawax-widget-heatmap').heatmap('getOptions').colors;
-                
+                    colors : ["#AAFFEE", "#6EE6CE", "#2EC993", "#2EC99B", "#3EC92E", "#3EC92E", "#3EC92E", "#E0110D", "#A8100D"],
+                }).uiLoadWidgetState();//not working because of async call ?
+
                 /** 
                  * Control Pane - Settings 
                  */
@@ -198,21 +197,23 @@
                 $('<p><span class="label label-default">Title</span>').appendTo($('.wx-controlpane-color'));
                 $('<input id="wx-title" type="text" value="" style="width:100%"/></p>')
                     .appendTo($('.wx-controlpane-color'))
-                    .val($('#wawax-widget-heatmap').heatmap('getOptions').title);
-                
-                $('#wx-title').on('change', function(ev){                    
-                    $('#wawax-widget-heatmap').heatmap('setTitle',ev.target.value);
-                });
+                    .val($('#wawax-widget-heatmap').heatmap('getOptions').title)
+                    .on('change', function(ev){
+                        var widget = $('#wawax-widget-heatmap');
+                        widget.heatmap('setTitle',ev.target.value).uiSaveWidgetState(widget.heatmap('getOptions')); //OK but should get the reference smwhere else
+                    });
                 
                 //colors
+                var colors = $('#wawax-widget-heatmap').heatmap('getOptions').colors;
                 $('<p><span class="label label-default">Colors</span>').appendTo($('.wx-controlpane-color'));
                 for(var i=0;i<colors.length;i++){
                     $('<input id="wx-color-'+i+'" type="color" value="" name="wx-color-'+i+'" />').appendTo($('.wx-controlpane-color'));
-                    $('#wx-color-'+i).val(colors[i]);
-                    $('#wx-color-'+i).on('change', function(ev){
-                        var index = (ev.target.id).substring(ev.target.id.length - 1);
-                        $('#wawax-widget-heatmap').heatmap('setColorIndex',index,ev.target.value);
-                    });
+                    $('#wx-color-'+i).val(colors[i])
+                        .on('change', function(ev){
+                            var widget = $('#wawax-widget-heatmap');
+                            var index = (ev.target.id).substring(ev.target.id.length - 1);
+                            widget.heatmap('setColorIndex',index,ev.target.value).uiSaveWidgetState(widget.heatmap('getOptions'));
+                        });
                 }
                 $('</p>').appendTo($('.wx-controlpane-color'));
                 
