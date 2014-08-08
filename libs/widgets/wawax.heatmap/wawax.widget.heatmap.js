@@ -28,8 +28,8 @@
 			title : 'Cartographie',
 			series : null,
 			colors : ["#aaffee", "#00aa88", "#87de87", "#55ff55", "#d4ff2a", "#ffd42a", "#ff6600", "#ff5555", "#ff0000"],
-			timesync : 0, //pour recaler les horloges
-            filters : {
+			timesync : 0, //not used here
+            filters : { //should add filter to select a subset with defined start / end period
 				maxdatas : {
 					max: 1000
 				}
