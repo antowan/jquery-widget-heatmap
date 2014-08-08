@@ -162,7 +162,9 @@
     <script src="libs/external/jquery/jquery-1.11.1.min.js"></script>
     <script src="libs/external/jquery/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="libs/external/bootstrap/bootstrap.min.js"></script>
-
+    
+    <script src="module://bajaScript/com/tridium/bajascript/bs.min.js"></script>
+    
     <script src="libs/external/d3/d3.min.js"></script>
     <script src="libs/m2m/wawax.control.m2m.bajascript.js"></script>
     <script src="libs/widgets/wawax.heatmap/wawax.widget.heatmap.js"></script>
@@ -170,6 +172,8 @@
     
     <script type="text/javascript">
         $(document).ready(function() {
+            baja.start();//load bajascript interface
+            
             //load asynchronously the widget inside this page
             $.getScript("file/httpd/jquery-widget-heatmap/libs/widgets/wawax.heatmap/wawax.widget.heatmap.js").done(function(script, textStatus) {
                 
