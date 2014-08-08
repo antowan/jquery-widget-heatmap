@@ -453,7 +453,7 @@
         
         //Public Accessor for all the options
         getOptions: function() {
-            return this.options; x
+            return this.options;
         },
         
         //repaint
