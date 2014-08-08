@@ -3,26 +3,13 @@
  * -----------------------------
  *
  * Last changed: $LastChangedDate$
- * @author $Author$
+ * @author Antoine SAUVAGE
  * @version $Revision$
  *
  * Copyright (c) 2013-2014 WAWAX
  * -----------------------------
  *
  * Proxy M2M BAJASCRIPT
- * Proxy entre les widgets et les sources de données
- *
- * ====
- * TODO
- * ====
- * + Connecteur CSV pour tester le switch en deux connecteurs M2M -> un fichier par proxy M2M
- * 		-> A implémenter : CSV, OBIX, AJAX (exemple) -> Dans autre fichier
- *
- * + method read a fusionner ou garder une differente pour chaque type de donnees ?
- * 		-> Faire les tests sur les types de données (num / bool / string / enum)
- *
- * + tester la fonction 'histoParams' ou les fonctions sont passes en reference par le widget
- * 		-> A supprimer
  * 
  */
 jQuery(function($) {
