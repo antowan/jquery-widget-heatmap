@@ -30,10 +30,10 @@ jQuery(function($) {
 			var value = null;
 			if (option == 1) {//full string display
 				value = this.getOutDisplay();
-				control.trigger('ReadDataPointUpdate', value.toFixed(1) + '');
+				control.trigger('wxReadDataPointUpdate', value.toFixed(1) + '');
 			} else {//just the value
 				value = this.getOut().getValue();
-				control.trigger('ReadDataPointUpdate', value.toFixed(1) + '');
+				control.trigger('wxReadDataPointUpdate', value.toFixed(1) + '');
 			}
 		};
 		sub.attach("changed", update);
@@ -60,7 +60,7 @@ jQuery(function($) {
 				point.setFallback(baja.$("baja:StatusNumeric", {
 					value : writeVal
 				}));
-				control.trigger('WriteDataPointUpdate', writeVal);
+				control.trigger('wxWriteDataPointUpdate', writeVal);
 			}
 		});
 	};
@@ -88,7 +88,7 @@ jQuery(function($) {
 				before : function() {
 				},
 				after : function() {
-					control.trigger('HistoDataSetLoaded', myTable);
+					control.trigger('wxHistoDataSetLoaded', myTable);
 					console.log(myTable);
 				},
 				each : function() {
