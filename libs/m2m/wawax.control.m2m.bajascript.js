@@ -89,7 +89,7 @@ jQuery(function($) {
     before : function() {
     },
     after : function() {
-     control.trigger('wxHistoDataSetLoaded', myTable);
+     control.trigger('HistoDataSetLoaded', myTable);
      console.log(myTable);
     },
     each : function() {
