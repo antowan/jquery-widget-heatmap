@@ -163,8 +163,7 @@
                         bottom : 100,
                         left : 30
                     }, 
-                    //width = self.uiWidgetWidth - margin.left - margin.right, 
-                    //height = self.uiWidgetHeight - margin.top - margin.bottom, 
+                    
                     width = self.uiWidgetWidth - margin.left - margin.right, 
                     height = self.uiWidgetHeight + margin.top - margin.bottom, 
                     gridSize = Math.floor(width / 24), 
@@ -224,14 +223,20 @@
                     .data(self.mySeries)
                     .enter()
                     .append("rect")
-                    .attr("x", function(d) {
-                        if (d != null){
+                    .attr("x", function(d, i) {
+                        if (d.hour != null){
                             return (d.hour) * gridSize;
                         }
+                        else{                   
+                        	return i%24 * gridSize;
+                        }
                     })
-                    .attr("y", function(d) {
-                        if (d != null)
+                    .attr("y", function(d, i) {
+                        if (d.day != null)
                             return (d.day) * gridSize;
+                        else{
+                        	return Math.floor(i/24) * gridSize;
+                        }
                     })
                     .attr("rx", 4).attr("ry", 4)
                     .attr("class", "wx-ui-widget-heatmap-text-hour wx-ui-widget-heatmap-rect-bordered")
@@ -240,7 +245,7 @@
                     .style("fill", o.colors[0]);
                 
                 heatMap.transition()
-                    .duration(500)
+                    .duration(300)
                     .style("fill", function(d) {
                         if (d != null && d.mean != null){
                             return colorScale(d.mean);
