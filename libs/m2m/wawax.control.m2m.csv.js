@@ -5,7 +5,7 @@
  * Last changed: $LastChangedDate$
  * 
  * @author Antoine Sauvage
- * @version $Revision$
+ * @version 1.0
  * 
  * -----------------------------
  * 
@@ -13,17 +13,6 @@
  * 
  */
 jQuery(function($) {
-
-	/**
-	 * ========================================================================
-	 * 
-	 * PROXY M2M CSV
-	 * 
-	 * + TODO
-	 * 		Check timezone area to shift with the good local time
-	 * 
-	 * ========================================================================
-	 */
 
 	/**
 	 * CSV historian
