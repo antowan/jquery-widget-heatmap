@@ -1,189 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <meta name="description" content="heatmap" />
-    <meta name="author" content="wawax" />
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="description" content="heatmap" />
+  <meta name="author" content="wawax" />
 
-    <title>Data Analysis - HeatMap</title>
+  <title>Data Analysis - HeatMap</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
 
-    <!-- Custom CSS -->
-    <link href="css/wawax.css" rel="stylesheet" />
-</head>
-<body>
+  <!-- Custom CSS -->
+  <link href="css/wawax.css" rel="stylesheet" />
+ </head>
+ <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="http://wawax.co">
-                    <img src="img/mascotte.png" style="height: 50px;" alt="logo" />&nbsp;wawax.co
-                </a>
-            </div>
-
-            <!-- Nav linksg -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="http://apps.wawax.co/#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-    </nav>
-
-    <div class="container">
-
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>Heatmap JQuery Widget demo. </h1>
-                
-                    <div class="row clearfix">
-                        <div class="row clearfix">
-                            <div class="col-md-8 column">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">
-                                            <b>Heatmap demo.</b>
-                                        </h3>
-                                    </div>
-
-                                    <div class="panel-body" id="wawax-widget-heatmap">
-                                        <p class="bg-primary">
-                                            <br />
-                                            <b>&nbsp;Comment:</b> Adding some cooling the afternoon maybe add some enjoyable extra confort to your employees (^_-)!
-                                            <br /><br />
-                                        </p>
-                                    </div>
-
-                                    <div class="panel-footer">
-                                        <p>
-                                            <ul>
-                                                <li>
-                                                    <b>x-axis: </b>hours
-                                                </li>
-                                                <li>
-                                                    <b>y-axis: </b>days
-                                                </li>
-                                                <li>
-                                                    <b>value: </b>mean value
-                                                </li>
-                                            </ul>
-                                        </p>                                    
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Control pane -->
-                            <div class="col-md-4 column">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">
-                                            <b>Settings</b>
-                                        </h3>
-                                    </div>
-                                    <div class="panel-body" id="wawax-widget-heatmap">
-                                        <p class="bg-primary">
-                                            <div class="wx-controlpane-title"></div>
-                                            <div class="wx-controlpane-color"></div>
-                                         </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                    
-                    
-                </div>
-            </div>
-        </div>
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+   <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+     </button>
+     <a class="navbar-brand" href="http://wawax.co"> <img src="img/mascotte.png" style="height: 50px;" alt="logo" />&nbsp;wawax.co </a>
     </div>
 
-    <!-- /.container -->
+    <!-- Nav linksg -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+     <ul class="nav navbar-nav navbar-right">
+      <li>
+       <a href="http://apps.wawax.co/#contact">Contact</a>
+      </li>
+     </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+   </div>
+  </nav>
 
-    <!-- JavaScript -->
-    <script src="libs/external/jquery/jquery-1.11.1.min.js"></script>
-    <script src="libs/external/jquery/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="libs/external/bootstrap/bootstrap.min.js"></script>
+  <div class="container">
 
-    <script src="module://bajaScript/com/tridium/bajascript/bs.min.js"></script>
-     
-    <script src="libs/external/d3/d3.min.js"></script>
-    <script src="libs/m2m/wawax.control.m2m.bajascript.js"></script>
-    <script src="libs/widgets/wawax.heatmap/wawax.widget.heatmap.js"></script>
-    <script src="libs/widgets/wawax.utils.js"></script>
-    
-    <script type="text/javascript">
-        $(document).ready(function() {
-            
-            baja.start();//load bajascript interface
-             
-            //load asynchronously the widget inside this page
-            $.getScript("file/httpd/jquery-widget-heatmap/libs/widgets/wawax.heatmap/wawax.widget.heatmap.js").done(function(script, textStatus) {
-                
-                /** 
-                 * Widget JQuery 
-                 */
-                
-                $('#wawax-widget-heatmap').heatmap({
-                    title : 'Indoor office temperature',
-                    series : [{
-                        label : 'My office room',
-                        serie : {
-                          fn : 'controlBajaHistory',
-                          req : 'history:/heatmap/SineWave'
+   <div class="row">
+    <div class="col-lg-12">
+     <h1>Heatmap JQuery Widget demo. </h1>
+
+     <div class="row clearfix">
+      <div class="row clearfix">
+       <div class="col-md-8 column">
+        <div class="panel panel-default">
+         <div class="panel-heading">
+          <h3 class="panel-title"><b>ヒートマップ デモ</b></h3>
+         </div>
+
+         <div class="panel-body" id="wawax-widget-heatmap">
+          <p class="bg-primary">
+           <br />
+           <b>&nbsp;Comment:</b> パターン 分析
+           <br />
+           <br />
+          </p>
+         </div>
+
+         <div class="panel-footer">
+          <p>
+           <ul>
+            <li>
+             <b>x-axis: </b>時
+            </li>
+            <li>
+             <b>y-axis: </b>日
+            </li>
+            <li>
+             <b>value: </b>平均 バリュー
+            </li>
+           </ul>
+          </p>
+         </div>
+        </div>
+       </div>
+       <!-- Control pane -->
+       <div class="col-md-4 column">
+        <div class="panel panel-default">
+         <div class="panel-heading">
+          <h3 class="panel-title"><b>セッティング</b></h3>
+         </div>
+         <div class="panel-body" id="wawax-widget-heatmap">
+          <p class="bg-primary">
+           <div class="wx-controlpane-title"></div>
+           <div class="wx-controlpane-color"></div>
+          </p>
+          <p>
+           <span class="label label-default">OBIX Web Service</span>
+           <br />
+           <a href="/obix/histories/FileDevice/TINT_EXTERNAL/~historyQuery?limit=1000" target="_blank">View OBIX XML</a>
+          </p>
+         </div>
+        </div>
+       </div>
+      </div>
+
+     </div>
+
+    </div>
+   </div>
+  </div>
+  </div>
+
+  <!-- /.container -->
+
+  <!-- JavaScript -->
+  <script src="libs/external/jquery/jquery-1.11.1.min.js"></script>
+  <script src="libs/external/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+  <script src="libs/external/bootstrap/bootstrap.min.js"></script>
+
+  <script src="module://bajaScript/com/tridium/bajascript/bs.min.js"></script>
+
+  <script src="libs/external/d3/d3.min.js"></script>
+  <script src="libs/m2m/wawax.control.m2m.bajascript.js"></script>
+  <script src="libs/widgets/wawax.heatmap/wawax.widget.heatmap.js"></script>
+  <script src="libs/widgets/wawax.utils.js"></script>
+
+  <script type="text/javascript">
+            $(document).ready(function() {
+
+                baja.start();
+                //load bajascript interface
+
+                //load asynchronously the widget inside this page
+                $.getScript("libs/widgets/wawax.heatmap/wawax.widget.heatmap.js").done(function(script, textStatus) {
+
+                    /**
+                     * Widget JQuery
+                     */
+                    $('#wawax-widget-heatmap').heatmap({
+                        title : '屋内気温',
+                        series : [{
+                            label : 'My office room',
+                            serie : {
+                                fn : 'controlBajaHistory',
+                                req : 'history:/FileDevice/ECS_EXTERNAL' // {TINT_EXTERNAL, ECS_EXTERNAL, TEXT_EXTERNAL}
+                            }
+                        }],
+                        colors : ["#AAFFEE", "#6EE6CE", "#2EC993", "#2EC99B", "#3EC92E", "#3EC92E", "#3EC92E", "#E0110D", "#A8100D"],
+                        filters : {//should add filter to select a subset with defined start / end period
+                            maxdatas : {
+                                max : 10000
+                            }
                         }
-                    }],
-                    colors : ["#AAFFEE", "#6EE6CE", "#2EC993", "#2EC99B", "#3EC92E", "#3EC92E", "#3EC92E", "#E0110D", "#A8100D"],
-                }).uiLoadWidgetState();
+                    }).uiLoadWidgetState();
 
-                /** 
-                 * Control Pane - Settings 
-                 */
-                
-                //title
-                $('<p><span class="label label-default">Title</span>').appendTo($('.wx-controlpane-color'));
-                $('<input id="wx-title" type="text" value="" style="width:100%"/></p>')
-                    .appendTo($('.wx-controlpane-color'))
-                    .val($('#wawax-widget-heatmap').heatmap('getOptions').title)
-                    .on('change', function(ev){
+                    /**
+                     * Control Pane - Settings
+                     */
+                    //title
+                    $('<p><span class="label label-default">タイトル</span>').appendTo($('.wx-controlpane-color'));
+                    $('<input id="wx-title" type="text" value="" style="width:100%"/></p>').appendTo($('.wx-controlpane-color')).val($('#wawax-widget-heatmap').heatmap('getOptions').title).on('change', function(ev) {
                         var widget = $('#wawax-widget-heatmap');
-                        widget.heatmap('setTitle',ev.target.value).uiSaveWidgetState(widget.heatmap('getOptions')); //OK but should get the reference smwhere else
+                        widget.heatmap('setTitle', ev.target.value).uiSaveWidgetState(widget.heatmap('getOptions'));//OK but should get the reference smwhere else
                     });
-                
-                //colors
-                var colors = $('#wawax-widget-heatmap').heatmap('getOptions').colors;
-                $('<p><span class="label label-default">Colors</span>').appendTo($('.wx-controlpane-color'));
-                for(var i=0;i<colors.length;i++){
-                    $('<input id="wx-color-'+i+'" type="color" value="" name="wx-color-'+i+'" />').appendTo($('.wx-controlpane-color'));
-                    $('#wx-color-'+i).val(colors[i])
-                        .on('change', function(ev){
+
+                    //colors
+                    var colors = $('#wawax-widget-heatmap').heatmap('getOptions').colors;
+                    $('<p><span class="label label-default">色</span>').appendTo($('.wx-controlpane-color'));
+                    for (var i = 0; i < colors.length; i++) {
+                        $('<input id="wx-color-' + i + '" type="color" value="" name="wx-color-' + i + '" />').appendTo($('.wx-controlpane-color'));
+                        $('#wx-color-' + i).val(colors[i]).on('change', function(ev) {
                             var widget = $('#wawax-widget-heatmap');
                             var index = (ev.target.id).substring(ev.target.id.length - 1);
-                            widget.heatmap('setColorIndex',index,ev.target.value).uiSaveWidgetState(widget.heatmap('getOptions'));
+                            widget.heatmap('setColorIndex', index, ev.target.value).uiSaveWidgetState(widget.heatmap('getOptions'));
                         });
-                }
-                $('</p>').appendTo($('.wx-controlpane-color'));
-                
+                    }
+                    $('</p>').appendTo($('.wx-controlpane-color'));
 
-            }).fail(function(jqxhr, settings, exception) {
-                console.log("An error occured during the loading.");
+                }).fail(function(jqxhr, settings, exception) {
+                    console.log("An error occured during the loading.");
+                });
+
             });
-                        
-        });
-    </script>
-</body>
+  </script>
+ </body>
 
 </html>
