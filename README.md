@@ -6,7 +6,7 @@ heatmap widget for JQuery
 A propos
 --------------
 
-My primaraly goal was to develop a widget as much as possible independant from his own data source.
+My primaraly goal was to develop a widget as much as possible independant from its own data source.
 Todo so I chose to develop this widget with the widget factory provided by JQuery UI and I had my own logic to get binded with a proxy in charge to notify the widget with the dataset loading.
 The proxy is passed in parameter of the widget when you configure it. In this version I used d3.js to proxy a csv data files.
 
@@ -39,7 +39,7 @@ $('#wawax-widget-heatmap').heatmap({
 
 Online demo
 --------------
-[demo on my website](http://apps.wawax.co/apps/jquery-widget-heatmap/)
+[demo on my website](#)
 
 ![alt tag](img/screenshot.jpg)
 
